@@ -8,6 +8,8 @@ import { SiteService } from './site/site.service';
 import { SiteController } from './site/site.controller';
 import { FileController } from './file/file.controller';
 import { FileService } from './file/file.service';
+import { CallService } from './call/call.service';
+import { CallController } from './call/call.controller';
 
 @Module({
     imports: [
@@ -16,7 +18,7 @@ import { FileService } from './file/file.service';
             cache: true,
         }),
     ],
-    controllers: [DescriptionController, ScriptController, SiteController, FileController],
-    providers: [DescriptionService, ScriptService, SiteService, FileService],
+    controllers: [DescriptionController, SiteController, ScriptController, FileController, CallController],
+    providers: [DescriptionService, ScriptService, SiteService, FileService, CallService],
 })
 export class ApiModule {}
