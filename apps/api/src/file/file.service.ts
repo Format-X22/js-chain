@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DtoFile, DtoFileWithMetadata, TFileId, TFileIdResponse } from './file.dto';
+import { DtoFile, TFileId, TFileIdResponse } from './file.dto';
 import { TSiteId } from '../site/site.dto';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class FileService {
         return { fileId: null };
     }
 
-    async read(fileId: TFileId): Promise<DtoFileWithMetadata> {
+    async read(fileId: TFileId): Promise<DtoFile> {
         // TODO -
 
         return;

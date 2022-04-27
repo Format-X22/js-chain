@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { DtoSite, DtoSiteWithMetadata, TSiteIdResponse } from './site.dto';
+import { DtoSite, TSiteIdResponse } from './site.dto';
 import { OkResult, TOkResult } from '../api.dto';
 import { SiteService } from './site.service';
 
@@ -17,7 +17,7 @@ export class SiteController {
     }
 
     @Get('/:id')
-    async read(@Param('id') id: string): Promise<DtoSiteWithMetadata> {
+    async read(@Param('id') id: string): Promise<DtoSite> {
         return await this.siteService.read(id);
     }
 

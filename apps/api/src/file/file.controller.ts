@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { DtoFile, DtoFileWithMetadata, DtoNewFile, TFileId, TFileIdResponse } from './file.dto';
+import { DtoFile, TFileIdResponse } from './file.dto';
 import { FileService } from './file.service';
 import { OkResult, TOkResult } from '../api.dto';
 
@@ -10,12 +10,12 @@ export class FileController {
     constructor(private fileService: FileService) {}
 
     @Post('/')
-    async create(@Body() body: DtoNewFile): Promise<TFileIdResponse> {
+    async create(@Body() body: DtoFile): Promise<TFileIdResponse> {
         return await this.fileService.create(body.siteId, body.data);
     }
 
     @Get('/:id')
-    async read(@Param('id') id: string): Promise<DtoFileWithMetadata> {
+    async read(@Param('id') id: string): Promise<DtoFile> {
         return await this.fileService.read(id);
     }
 

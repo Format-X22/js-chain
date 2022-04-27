@@ -10,6 +10,8 @@ import { FileController } from './file/file.controller';
 import { FileService } from './file/file.service';
 import { CallService } from './call/call.service';
 import { CallController } from './call/call.controller';
+import { ProxyController } from './proxy/proxy.controller';
+import { ProxyService } from './proxy/proxy.service';
 
 @Module({
     imports: [
@@ -18,7 +20,14 @@ import { CallController } from './call/call.controller';
             cache: true,
         }),
     ],
-    controllers: [DescriptionController, SiteController, ScriptController, FileController, CallController],
-    providers: [DescriptionService, ScriptService, SiteService, FileService, CallService],
+    controllers: [
+        DescriptionController,
+        SiteController,
+        ScriptController,
+        FileController,
+        ProxyController,
+        CallController,
+    ],
+    providers: [DescriptionService, ScriptService, SiteService, FileService, CallService, ProxyService],
 })
 export class ApiModule {}

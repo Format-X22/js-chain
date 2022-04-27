@@ -10,5 +10,3 @@ export class DtoSite {
     @Property()
     isNamespaceOnly?: boolean;
 }
-
-export class DtoSiteWithMetadata extends DtoSite {}

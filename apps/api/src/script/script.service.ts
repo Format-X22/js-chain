@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DtoScript, DtoScriptWithMetadata, TScriptId, TScriptIdResponse } from './script.dto';
+import { DtoScript, TScriptId, TScriptIdResponse } from './script.dto';
 import { TSiteId } from '../site/site.dto';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class ScriptService {
         return { scriptId: null };
     }
 
-    async read(scriptId: TScriptId): Promise<DtoScriptWithMetadata> {
+    async read(scriptId: TScriptId): Promise<DtoScript> {
         // TODO -
 
         return;

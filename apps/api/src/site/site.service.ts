@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DtoSite, DtoSiteWithMetadata, TSiteId, TSiteIdResponse } from './site.dto';
+import { DtoSite, TSiteId, TSiteIdResponse } from './site.dto';
 
 @Injectable()
 export class SiteService {
@@ -9,7 +9,7 @@ export class SiteService {
         return { siteId: null };
     }
 
-    async read(siteId: TSiteId): Promise<DtoSiteWithMetadata> {
+    async read(siteId: TSiteId): Promise<DtoSite> {
         // TODO -
 
         return;
