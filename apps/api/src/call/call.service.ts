@@ -13,15 +13,6 @@ export type TCallScriptOptions = {
     body: TBodyParams;
 };
 
-export type TCallProxyOptions = {
-    siteId: TSiteId;
-    proxyId: TScriptId;
-    endpoint: string;
-    method: RequestMethod;
-    query: TQueryParams;
-    body: TBodyParams;
-};
-
 @Injectable()
 export class CallService {
     async getSite(siteId: TSiteId): Promise<string> {
@@ -40,10 +31,6 @@ export class CallService {
     }
 
     async callScript(options: TCallScriptOptions): Promise<TScriptResult> {
-        // TODO -
-    }
-
-    async callProxy(options: TCallProxyOptions): Promise<TScriptResult> {
         // TODO -
     }
 }
