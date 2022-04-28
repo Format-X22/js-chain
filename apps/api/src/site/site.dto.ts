@@ -5,6 +5,9 @@ export type TSiteIdResponse = { siteId: TSiteId };
 
 export class DtoSite {
     @Property()
+    siteId: TSiteId;
+
+    @Property()
     bundle?: string;
 
     @Property()

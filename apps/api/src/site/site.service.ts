@@ -3,7 +3,11 @@ import { DtoSite, TSiteId, TSiteIdResponse } from './site.dto';
 
 @Injectable()
 export class SiteService {
-    async create(bundle: DtoSite['bundle'], isNamespaceOnly: DtoSite['isNamespaceOnly']): Promise<TSiteIdResponse> {
+    async create(
+        siteId: TSiteId,
+        bundle: DtoSite['bundle'],
+        isNamespaceOnly: DtoSite['isNamespaceOnly'],
+    ): Promise<TSiteIdResponse> {
         // TODO -
 
         return { siteId: null };

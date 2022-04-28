@@ -13,7 +13,7 @@ export class SiteController {
     async create(@Body() body: DtoSite): Promise<TSiteIdResponse> {
         this.checkSiteData(body);
 
-        return await this.siteService.create(body.bundle, body.isNamespaceOnly);
+        return await this.siteService.create(body.siteId, body.bundle, body.isNamespaceOnly);
     }
 
     @Get('/:id')
