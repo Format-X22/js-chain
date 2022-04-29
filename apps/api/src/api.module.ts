@@ -35,7 +35,7 @@ import { ScriptModel } from '@app/shared/storage/models/script.model';
                     models: [SiteModel, FileModel, ScriptModel],
                     autoLoadModels: true,
                     synchronize: true,
-                    logging: false,
+                    //logging: false,
                     idleTimeoutMillis: 0,
                     connectionTimeoutMillis: 0,
                 };

@@ -4,23 +4,23 @@ import { TSiteName } from '../site/site.dto';
 
 @Injectable()
 export class FileService {
-    async create(siteId: TSiteName, data: DtoFile['data']): Promise<TFileNameResponse> {
+    async create({ siteName, fileName, data }: DtoFile): Promise<TFileNameResponse> {
         // TODO -
 
         return { fileName: null };
     }
 
-    async read(fileId: TFileName): Promise<DtoFile> {
+    async read(siteName: TSiteName, fileName: TFileName): Promise<DtoFile> {
         // TODO -
 
         return;
     }
 
-    async update(fileId: TFileName, data: DtoFile['data']): Promise<void> {
+    async update({ siteName, fileName, data }: DtoFile): Promise<void> {
         // TODO -
     }
 
-    async delete(fileId: TFileName): Promise<void> {
+    async delete(siteName: TSiteName, fileName: TFileName): Promise<void> {
         // TODO -
     }
 }

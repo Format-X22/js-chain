@@ -5,30 +5,34 @@ import { FileService } from './file.service';
 import { OkResult, TOkResult } from '../api.dto';
 
 @ApiTags('File api')
-@Controller('file')
+@Controller('/site/:siteName/file')
 export class FileController {
     constructor(private fileService: FileService) {}
 
     @Post('/')
-    async create(@Body() body: DtoFile): Promise<TFileNameResponse> {
-        return await this.fileService.create(body.siteName, body.data);
+    async create(@Param('siteName') siteName: string, @Body() body: DtoFile): Promise<TFileNameResponse> {
+        return await this.fileService.create(body);
     }
 
-    @Get('/:name')
-    async read(@Param('name') name: string): Promise<DtoFile> {
-        return await this.fileService.read(name);
+    @Get('/:fileName')
+    async read(@Param('siteName') siteName: string, @Param('fileName') fileName: string): Promise<DtoFile> {
+        return await this.fileService.read(siteName, fileName);
     }
 
-    @Patch('/:name')
-    async update(@Param('name') name: string, @Body() body: DtoFile): Promise<TOkResult> {
-        await this.fileService.update(name, body.data);
+    @Patch('/:fileName')
+    async update(
+        @Param('siteName') siteName: string,
+        @Param('fileName') fileName: string,
+        @Body() body: DtoFile,
+    ): Promise<TOkResult> {
+        await this.fileService.update({ siteName, fileName, ...body });
 
         return OkResult;
     }
 
-    @Delete('/:name')
-    async delete(@Param('name') name: string): Promise<TOkResult> {
-        await this.fileService.delete(name);
+    @Delete('/:fileName')
+    async delete(@Param('siteName') siteName: string, @Param('fileName') fileName: string): Promise<TOkResult> {
+        await this.fileService.delete(siteName, fileName);
 
         return OkResult;
     }

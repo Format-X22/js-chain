@@ -5,30 +5,34 @@ import { ScriptService } from './script.service';
 import { OkResult, TOkResult } from '../api.dto';
 
 @ApiTags('Script api')
-@Controller('script')
+@Controller('/site/:siteName/script')
 export class ScriptController {
     constructor(private scriptService: ScriptService) {}
 
     @Post('/')
-    async create(@Body() body: DtoScript): Promise<TScriptNameResponse> {
-        return await this.scriptService.create(body.siteName, body.bundle);
+    async create(@Param('siteName') siteName: string, @Body() body: DtoScript): Promise<TScriptNameResponse> {
+        return await this.scriptService.create(body);
     }
 
-    @Get('/:name')
-    async read(@Param('name') name: string): Promise<DtoScript> {
-        return await this.scriptService.read(name);
+    @Get('/:scriptName')
+    async read(@Param('siteName') siteName: string, @Param('scriptName') scriptName: string): Promise<DtoScript> {
+        return await this.scriptService.read(siteName, scriptName);
     }
 
-    @Patch('/:name')
-    async update(@Param('name') name: string, @Body() body: DtoScript): Promise<TOkResult> {
-        await this.scriptService.update(name, body.bundle);
+    @Patch('/:scriptName')
+    async update(
+        @Param('siteName') siteName: string,
+        @Param('scriptName') scriptName: string,
+        @Body() body: DtoScript,
+    ): Promise<TOkResult> {
+        await this.scriptService.update({ siteName, scriptName, ...body });
 
         return OkResult;
     }
 
-    @Delete('/:name')
-    async delete(@Param('name') name: string): Promise<TOkResult> {
-        await this.scriptService.delete(name);
+    @Delete('/:scriptName')
+    async delete(@Param('siteName') siteName: string, @Param('scriptName') scriptName: string): Promise<TOkResult> {
+        await this.scriptService.delete(siteName, scriptName);
 
         return OkResult;
     }

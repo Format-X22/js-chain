@@ -8,6 +8,9 @@ export class DtoFile {
     @Property({ isRequired: true, type: String })
     siteName: TSiteName;
 
+    @Property({ isRequired: true, type: String })
+    fileName: TFileName;
+
     @Property({ isRequired: true })
     data: string;
 }

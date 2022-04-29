@@ -5,7 +5,7 @@ export type TSiteIdResponse = { siteName: TSiteName };
 
 export class DtoSite {
     @Property()
-    siteName: TSiteName;
+    siteName?: TSiteName;
 
     @Property()
     bundle?: string;

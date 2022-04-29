@@ -38,9 +38,9 @@ async function bootstrap() {
 
     const syncOptions = { alter: { drop: false } };
 
-    await SiteModel.sync(syncOptions);
-    await FileModel.sync(syncOptions);
-    await ScriptModel.sync(syncOptions);
+    //await SiteModel.sync(syncOptions);
+    //await FileModel.sync(syncOptions);
+    //await ScriptModel.sync(syncOptions);
 
     await app.listen(port);
 }

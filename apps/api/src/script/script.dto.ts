@@ -8,6 +8,9 @@ export class DtoScript {
     @Property({ isRequired: true, type: String })
     siteName: TSiteName;
 
+    @Property({ isRequired: true, type: String })
+    scriptName: TScriptName;
+
     @Property({ isRequired: true })
     bundle: string;
 }
