@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { DtoFile, TFileId, TFileIdResponse } from './file.dto';
-import { TSiteId } from '../site/site.dto';
+import { DtoFile, TFileName, TFileNameResponse } from './file.dto';
+import { TSiteName } from '../site/site.dto';
 
 @Injectable()
 export class FileService {
-    async create(siteId: TSiteId, data: DtoFile['data']): Promise<TFileIdResponse> {
+    async create(siteId: TSiteName, data: DtoFile['data']): Promise<TFileNameResponse> {
         // TODO -
 
-        return { fileId: null };
+        return { fileName: null };
     }
 
-    async read(fileId: TFileId): Promise<DtoFile> {
+    async read(fileId: TFileName): Promise<DtoFile> {
         // TODO -
 
         return;
     }
 
-    async update(fileId: TFileId, data: DtoFile['data']): Promise<void> {
+    async update(fileId: TFileName, data: DtoFile['data']): Promise<void> {
         // TODO -
     }
 
-    async delete(fileId: TFileId): Promise<void> {
+    async delete(fileId: TFileName): Promise<void> {
         // TODO -
     }
 }

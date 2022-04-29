@@ -13,25 +13,25 @@ export class SiteController {
     async create(@Body() body: DtoSite): Promise<TSiteIdResponse> {
         this.checkSiteData(body);
 
-        return await this.siteService.create(body.siteId, body.bundle, body.isNamespaceOnly);
+        return await this.siteService.create(body.siteName, body.bundle, body.isNamespaceOnly);
     }
 
-    @Get('/:id')
-    async read(@Param('id') id: string): Promise<DtoSite> {
-        return await this.siteService.read(id);
+    @Get('/:name')
+    async read(@Param('name') name: string): Promise<DtoSite> {
+        return await this.siteService.read(name);
     }
 
-    @Patch('/:id')
-    async update(@Param('id') id: string, @Body() body: DtoSite): Promise<TOkResult> {
+    @Patch('/:name')
+    async update(@Param('name') name: string, @Body() body: DtoSite): Promise<TOkResult> {
         this.checkSiteData(body);
-        await this.siteService.update(id, body.bundle, body.isNamespaceOnly);
+        await this.siteService.update(name, body.bundle, body.isNamespaceOnly);
 
         return OkResult;
     }
 
-    @Delete('/:id')
-    async delete(@Param('id') id: string): Promise<TOkResult> {
-        await this.siteService.delete(id);
+    @Delete('/:name')
+    async delete(@Param('name') name: string): Promise<TOkResult> {
+        await this.siteService.delete(name);
 
         return OkResult;
     }

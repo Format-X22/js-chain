@@ -5,10 +5,10 @@ import { SiteModel } from '@app/shared/storage/models/site.model';
 export class FileModel extends Model {
     @ForeignKey(() => SiteModel)
     @Column(DataType.STRING(256))
-    siteId: number;
+    siteName: number;
 
     @Column(DataType.STRING(256))
-    fileId: string;
+    fileName: string;
 
     @Column(DataType.BLOB)
     data: Buffer;

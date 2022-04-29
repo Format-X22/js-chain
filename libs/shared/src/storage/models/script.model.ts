@@ -5,10 +5,10 @@ import { SiteModel } from '@app/shared/storage/models/site.model';
 export class ScriptModel extends Model {
     @ForeignKey(() => SiteModel)
     @Column(DataType.STRING(256))
-    siteId: string;
+    siteName: string;
 
     @Column(DataType.STRING(256))
-    scriptId: string;
+    scriptName: string;
 
     @Column(DataType.TEXT)
     bundle: string;

@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { DtoScript, TScriptId, TScriptIdResponse } from './script.dto';
-import { TSiteId } from '../site/site.dto';
+import { DtoScript, TScriptName, TScriptNameResponse } from './script.dto';
+import { TSiteName } from '../site/site.dto';
 
 @Injectable()
 export class ScriptService {
-    async create(siteId: TSiteId, bundle: DtoScript['bundle']): Promise<TScriptIdResponse> {
+    async create(siteId: TSiteName, bundle: DtoScript['bundle']): Promise<TScriptNameResponse> {
         // TODO -
 
-        return { scriptId: null };
+        return { scriptName: null };
     }
 
-    async read(scriptId: TScriptId): Promise<DtoScript> {
+    async read(scriptId: TScriptName): Promise<DtoScript> {
         // TODO -
 
         return;
     }
 
-    async update(scriptId: TScriptId, bundle: DtoScript['bundle']): Promise<void> {
+    async update(scriptId: TScriptName, bundle: DtoScript['bundle']): Promise<void> {
         // TODO -
     }
 
-    async delete(scriptId: TScriptId): Promise<void> {
+    async delete(scriptId: TScriptName): Promise<void> {
         // TODO -
     }
 }

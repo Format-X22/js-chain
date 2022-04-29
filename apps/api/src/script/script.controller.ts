@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { DtoScript, TScriptIdResponse } from './script.dto';
+import { DtoScript, TScriptNameResponse } from './script.dto';
 import { ScriptService } from './script.service';
 import { OkResult, TOkResult } from '../api.dto';
 
@@ -10,25 +10,25 @@ export class ScriptController {
     constructor(private scriptService: ScriptService) {}
 
     @Post('/')
-    async create(@Body() body: DtoScript): Promise<TScriptIdResponse> {
-        return await this.scriptService.create(body.siteId, body.bundle);
+    async create(@Body() body: DtoScript): Promise<TScriptNameResponse> {
+        return await this.scriptService.create(body.siteName, body.bundle);
     }
 
-    @Get('/:id')
-    async read(@Param('id') id: string): Promise<DtoScript> {
-        return await this.scriptService.read(id);
+    @Get('/:name')
+    async read(@Param('name') name: string): Promise<DtoScript> {
+        return await this.scriptService.read(name);
     }
 
-    @Patch('/:id')
-    async update(@Param('id') id: string, @Body() body: DtoScript): Promise<TOkResult> {
-        await this.scriptService.update(id, body.bundle);
+    @Patch('/:name')
+    async update(@Param('name') name: string, @Body() body: DtoScript): Promise<TOkResult> {
+        await this.scriptService.update(name, body.bundle);
 
         return OkResult;
     }
 
-    @Delete('/:id')
-    async delete(@Param('id') id: string): Promise<TOkResult> {
-        await this.scriptService.delete(id);
+    @Delete('/:name')
+    async delete(@Param('name') name: string): Promise<TOkResult> {
+        await this.scriptService.delete(name);
 
         return OkResult;
     }

@@ -1,11 +1,11 @@
 import { Property } from '../api.decorator';
 
-export type TSiteId = string;
-export type TSiteIdResponse = { siteId: TSiteId };
+export type TSiteName = string;
+export type TSiteIdResponse = { siteName: TSiteName };
 
 export class DtoSite {
     @Property()
-    siteId: TSiteId;
+    siteName: TSiteName;
 
     @Property()
     bundle?: string;

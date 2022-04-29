@@ -13,7 +13,7 @@ import {
     RequestMethod,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { TBodyParams, TProxyResult, TQueryParams, TScriptResult } from './call.dto';
+import { TBodyParams, TQueryParams, TScriptResult } from './call.dto';
 import { CallService } from './call.service';
 
 @ApiTags('Call api')
@@ -21,123 +21,123 @@ import { CallService } from './call.service';
 export class CallController {
     constructor(private callService: CallService) {}
 
-    @Get('/:siteId')
-    async getSite(@Param('siteId') siteId: string): Promise<string> {
-        return await this.callService.getSite(siteId);
+    @Get('/:siteName')
+    async getSite(@Param('siteName') siteName: string): Promise<string> {
+        return await this.callService.getSite(siteName);
     }
 
-    @Get('/:siteId/file/:fileId')
-    async getFile(@Param('siteId') siteId: string, @Param('fileId') fileId: string): Promise<string> {
-        return await this.callService.getFile(siteId, fileId);
+    @Get('/:siteName/file/:fileName')
+    async getFile(@Param('siteName') siteName: string, @Param('fileName') fileName: string): Promise<string> {
+        return await this.callService.getFile(siteName, fileName);
     }
 
-    @Get('/:siteId/script-docs')
-    async getScriptDocs(@Param('siteId') siteId: string): Promise<string> {
-        return await this.callService.getScriptDocs(siteId);
+    @Get('/:siteName/script-docs')
+    async getScriptDocs(@Param('siteName') siteName: string): Promise<string> {
+        return await this.callService.getScriptDocs(siteName);
     }
 
-    @Get('/:siteId/script/:scriptId')
+    @Get('/:siteName/script/:scriptName')
     async callScriptAsGet(
-        @Param('siteId') siteId: string,
-        @Param('scriptId') scriptId: string,
+        @Param('siteName') siteName: string,
+        @Param('scriptName') scriptName: string,
         @Query() query: TQueryParams,
     ): Promise<TScriptResult> {
         return await this.callService.callScript({
-            siteId,
-            scriptId,
+            siteName,
+            scriptName,
             method: RequestMethod.GET,
             query,
             body: null,
         });
     }
 
-    @Post('/:siteId/script/:scriptId')
+    @Post('/:siteName/script/:scriptName')
     async callScriptAsPost(
-        @Param('siteId') siteId: string,
-        @Param('scriptId') scriptId: string,
+        @Param('siteName') siteName: string,
+        @Param('scriptName') scriptName: string,
         @Query() query: TQueryParams,
         @Body() body: TBodyParams,
     ): Promise<TScriptResult> {
         return await this.callService.callScript({
-            siteId,
-            scriptId,
+            siteName,
+            scriptName,
             method: RequestMethod.POST,
             query,
             body,
         });
     }
 
-    @Put('/:siteId/script/:scriptId')
+    @Put('/:siteName/script/:scriptName')
     async callScriptAsPut(
-        @Param('siteId') siteId: string,
-        @Param('scriptId') scriptId: string,
+        @Param('siteName') siteName: string,
+        @Param('scriptName') scriptName: string,
         @Query() query: TQueryParams,
         @Body() body: TBodyParams,
     ): Promise<TScriptResult> {
         return await this.callService.callScript({
-            siteId,
-            scriptId,
+            siteName,
+            scriptName,
             method: RequestMethod.PUT,
             query,
             body,
         });
     }
 
-    @Patch('/:siteId/script/:scriptId')
+    @Patch('/:siteName/script/:scriptName')
     async callScriptAsPatch(
-        @Param('siteId') siteId: string,
-        @Param('scriptId') scriptId: string,
+        @Param('siteName') siteName: string,
+        @Param('scriptName') scriptName: string,
         @Query() query: TQueryParams,
         @Body() body: TBodyParams,
     ): Promise<TScriptResult> {
         return await this.callService.callScript({
-            siteId,
-            scriptId,
+            siteName,
+            scriptName,
             method: RequestMethod.PATCH,
             query,
             body,
         });
     }
 
-    @Delete('/:siteId/script/:scriptId')
+    @Delete('/:siteName/script/:scriptName')
     async callScriptAsDelete(
-        @Param('siteId') siteId: string,
-        @Param('scriptId') scriptId: string,
+        @Param('siteName') siteName: string,
+        @Param('scriptName') scriptName: string,
         @Query() query: TQueryParams,
     ): Promise<TScriptResult> {
         return await this.callService.callScript({
-            siteId,
-            scriptId,
+            siteName,
+            scriptName,
             method: RequestMethod.DELETE,
             query,
             body: null,
         });
     }
 
-    @Head('/:siteId/script/:scriptId')
+    @Head('/:siteName/script/:scriptName')
     async callScriptAsHead(
-        @Param('siteId') siteId: string,
-        @Param('scriptId') scriptId: string,
+        @Param('siteName') siteName: string,
+        @Param('scriptName') scriptName: string,
         @Query() query: TQueryParams,
     ): Promise<TScriptResult> {
         return await this.callService.callScript({
-            siteId,
-            scriptId,
+            siteName,
+            scriptName,
             method: RequestMethod.HEAD,
             query,
             body: null,
         });
     }
 
-    @Options('/:siteId/script/:scriptId')
+    @Options('/:siteName/script/:scriptName')
     async callScriptAsOptions(
-        @Param('siteId') siteId: string,
-        @Param('scriptId') scriptId: string,
+        @Param('siteName') siteName: string,
+        @Param('scriptName') scriptName: string,
         @Query() query: TQueryParams,
     ): Promise<TScriptResult> {
         return await this.callService.callScript({
-            siteId,
-            scriptId,
+            siteName,
+            scriptName,
             method: RequestMethod.OPTIONS,
             query,
             body: null,

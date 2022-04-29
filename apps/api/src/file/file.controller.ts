@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { DtoFile, TFileIdResponse } from './file.dto';
+import { DtoFile, TFileNameResponse } from './file.dto';
 import { FileService } from './file.service';
 import { OkResult, TOkResult } from '../api.dto';
 
@@ -10,25 +10,25 @@ export class FileController {
     constructor(private fileService: FileService) {}
 
     @Post('/')
-    async create(@Body() body: DtoFile): Promise<TFileIdResponse> {
-        return await this.fileService.create(body.siteId, body.data);
+    async create(@Body() body: DtoFile): Promise<TFileNameResponse> {
+        return await this.fileService.create(body.siteName, body.data);
     }
 
-    @Get('/:id')
-    async read(@Param('id') id: string): Promise<DtoFile> {
-        return await this.fileService.read(id);
+    @Get('/:name')
+    async read(@Param('name') name: string): Promise<DtoFile> {
+        return await this.fileService.read(name);
     }
 
-    @Patch('/:id')
-    async update(@Param('id') id: string, @Body() body: DtoFile): Promise<TOkResult> {
-        await this.fileService.update(id, body.data);
+    @Patch('/:name')
+    async update(@Param('name') name: string, @Body() body: DtoFile): Promise<TOkResult> {
+        await this.fileService.update(name, body.data);
 
         return OkResult;
     }
 
-    @Delete('/:id')
-    async delete(@Param('id') id: string): Promise<TOkResult> {
-        await this.fileService.delete(id);
+    @Delete('/:name')
+    async delete(@Param('name') name: string): Promise<TOkResult> {
+        await this.fileService.delete(name);
 
         return OkResult;
     }

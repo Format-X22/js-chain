@@ -1,12 +1,12 @@
 import { Property } from '../api.decorator';
-import { TSiteId } from '../site/site.dto';
+import { TSiteName } from '../site/site.dto';
 
-export type TFileId = string;
-export type TFileIdResponse = { fileId: TFileId };
+export type TFileName = string;
+export type TFileNameResponse = { fileName: TFileName };
 
 export class DtoFile {
     @Property({ isRequired: true, type: String })
-    siteId: TSiteId;
+    siteName: TSiteName;
 
     @Property({ isRequired: true })
     data: string;

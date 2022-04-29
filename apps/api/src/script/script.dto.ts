@@ -1,12 +1,12 @@
 import { Property } from '../api.decorator';
-import { TSiteId } from '../site/site.dto';
+import { TSiteName } from '../site/site.dto';
 
-export type TScriptId = string;
-export type TScriptIdResponse = { scriptId: TScriptId };
+export type TScriptName = string;
+export type TScriptNameResponse = { scriptName: TScriptName };
 
 export class DtoScript {
     @Property({ isRequired: true, type: String })
-    siteId: TSiteId;
+    siteName: TSiteName;
 
     @Property({ isRequired: true })
     bundle: string;

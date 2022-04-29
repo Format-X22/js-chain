@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { RequestMethod } from '@nestjs/common/enums/request-method.enum';
 import { TScriptResult, TBodyParams, TQueryParams } from './call.dto';
-import { TSiteId } from '../site/site.dto';
-import { TScriptId } from '../script/script.dto';
-import { TFileId } from '../file/file.dto';
+import { TSiteName } from '../site/site.dto';
+import { TScriptName } from '../script/script.dto';
+import { TFileName } from '../file/file.dto';
 
 export type TCallScriptOptions = {
-    siteId: TSiteId;
-    scriptId: TScriptId;
+    siteName: TSiteName;
+    scriptName: TScriptName;
     method: RequestMethod;
     query: TQueryParams;
     body: TBodyParams;
@@ -15,17 +15,17 @@ export type TCallScriptOptions = {
 
 @Injectable()
 export class CallService {
-    async getSite(siteId: TSiteId): Promise<string> {
+    async getSite(siteId: TSiteName): Promise<string> {
         // TODO -
         return;
     }
 
-    async getFile(siteId: TSiteId, fileId: TFileId): Promise<string> {
+    async getFile(siteId: TSiteName, fileId: TFileName): Promise<string> {
         // TODO -
         return;
     }
 
-    async getScriptDocs(siteId: TSiteId): Promise<string> {
+    async getScriptDocs(siteId: TSiteName): Promise<string> {
         // TODO -
         return;
     }

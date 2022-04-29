@@ -5,7 +5,7 @@ import { ScriptModel } from '@app/shared/storage/models/script.model';
 @Table
 export class SiteModel extends Model {
     @Column(DataType.STRING(256))
-    siteId: string;
+    siteName: string;
 
     @Column(DataType.STRING(256))
     owner: string;
@@ -16,9 +16,9 @@ export class SiteModel extends Model {
     @Column(DataType.TEXT)
     bundle: string;
 
-    @HasMany(() => FileModel, 'siteId')
+    @HasMany(() => FileModel, 'siteName')
     files: Array<FileModel>;
 
-    @HasMany(() => ScriptModel, 'siteId')
+    @HasMany(() => ScriptModel, 'siteName')
     scripts: Array<ScriptModel>;
 }
