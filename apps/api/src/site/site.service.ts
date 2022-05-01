@@ -1,25 +1,55 @@
-import { Injectable } from '@nestjs/common';
-import { DtoSite, TSiteName, TSiteIdResponse } from './site.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { SiteModel } from '@app/shared/storage/models/site.model';
+import { StorageService } from '@app/shared/storage/storage.service';
 
 @Injectable()
 export class SiteService {
-    async create({ siteName, bundle, isNamespaceOnly }: DtoSite): Promise<TSiteIdResponse> {
-        // TODO -
+    private SiteModel: typeof SiteModel;
 
-        return { siteName: null };
+    constructor(storageService: StorageService) {
+        this.SiteModel = storageService.Site;
     }
 
-    async read(siteName: TSiteName): Promise<DtoSite> {
-        // TODO -
+    async get(siteName): Promise<SiteModel['html']> {
+        const data = await this.SiteModel.findOne({ where: { siteName } });
 
-        return;
+        return data?.html;
     }
 
-    async update({ siteName, bundle, isNamespaceOnly }: DtoSite): Promise<void> {
-        // TODO -
+    async create({ siteName, html, isNamespaceOnly }: SiteModel): Promise<void> {
+        await this.SiteModel.create({ siteName, html, isNamespaceOnly });
     }
 
-    async delete(siteId: TSiteName): Promise<void> {
-        // TODO -
+    async read(siteName: SiteModel['siteName']): Promise<SiteModel> {
+        return await this.SiteModel.findOne({
+            where: { siteName },
+            attributes: ['siteName', 'owner', 'isNamespaceOnly', 'html'],
+        });
+    }
+
+    async update({ siteName, html, isNamespaceOnly }: SiteModel): Promise<void> {
+        const values: Partial<SiteModel> = {};
+
+        if (isNamespaceOnly) {
+            values.isNamespaceOnly = true;
+            values.html = null;
+        } else {
+            values.isNamespaceOnly = false;
+            values.html = html;
+        }
+
+        const result = await this.SiteModel.update(values, { where: { siteName } });
+
+        if (!result[0]) {
+            throw new NotFoundException();
+        }
+    }
+
+    async delete(siteName: SiteModel['siteName']): Promise<void> {
+        const result = await this.SiteModel.destroy({ where: { siteName } });
+
+        if (!result) {
+            throw new NotFoundException();
+        }
     }
 }

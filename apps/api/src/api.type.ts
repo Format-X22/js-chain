@@ -5,4 +5,10 @@ export type TStatus = {
         minor: number;
         fix: number;
     };
+    typescriptCompiler: {
+        full: `${TStatus['typescriptCompiler']['major']}.${TStatus['typescriptCompiler']['minor']}.${TStatus['version']['fix']}`;
+        major: number;
+        minor: number;
+        fix: number;
+    };
 };

@@ -8,5 +8,6 @@ import { ScriptModel } from '@app/shared/storage/models/script.model';
 @Module({
     imports: [SequelizeModule.forFeature([SiteModel, FileModel, ScriptModel])],
     providers: [StorageService],
+    exports: [StorageService],
 })
 export class StorageModule {}

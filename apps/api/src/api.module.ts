@@ -14,6 +14,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { SiteModel } from '@app/shared/storage/models/site.model';
 import { FileModel } from '@app/shared/storage/models/file.model';
 import { ScriptModel } from '@app/shared/storage/models/script.model';
+import { StorageModule } from '@app/shared/storage/storage.module';
 
 @Module({
     imports: [
@@ -35,12 +36,13 @@ import { ScriptModel } from '@app/shared/storage/models/script.model';
                     models: [SiteModel, FileModel, ScriptModel],
                     autoLoadModels: true,
                     synchronize: true,
-                    //logging: false,
+                    logging: false,
                     idleTimeoutMillis: 0,
                     connectionTimeoutMillis: 0,
                 };
             },
         }),
+        StorageModule,
     ],
     controllers: [DescriptionController, SiteController, ScriptController, FileController, CallController],
     providers: [DescriptionService, ScriptService, SiteService, FileService, CallService],

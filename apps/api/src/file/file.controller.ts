@@ -1,37 +1,40 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { DtoFile, TFileNameResponse } from './file.dto';
 import { FileService } from './file.service';
 import { OkResult, TOkResult } from '../api.dto';
+import { FileModel } from '@app/shared/storage/models/file.model';
 
 @ApiTags('File api')
-@Controller('/site/:siteName/file')
+@Controller('')
 export class FileController {
     constructor(private fileService: FileService) {}
 
-    @Post('/')
-    async create(@Param('siteName') siteName: string, @Body() body: DtoFile): Promise<TFileNameResponse> {
-        return await this.fileService.create(body);
+    @Get('/file')
+    async getBase64(@Query('siteName') siteName: string, @Query('fileName') fileName: string): Promise<string> {
+        return await this.fileService.get(siteName, fileName);
     }
 
-    @Get('/:fileName')
-    async read(@Param('siteName') siteName: string, @Param('fileName') fileName: string): Promise<DtoFile> {
-        return await this.fileService.read(siteName, fileName);
-    }
-
-    @Patch('/:fileName')
-    async update(
-        @Param('siteName') siteName: string,
-        @Param('fileName') fileName: string,
-        @Body() body: DtoFile,
-    ): Promise<TOkResult> {
-        await this.fileService.update({ siteName, fileName, ...body });
+    @Post('/manage/file')
+    async create(@Query('siteName') siteName: string, @Body() body: FileModel): Promise<TOkResult> {
+        await this.fileService.create(body);
 
         return OkResult;
     }
 
-    @Delete('/:fileName')
-    async delete(@Param('siteName') siteName: string, @Param('fileName') fileName: string): Promise<TOkResult> {
+    @Get('/manage/file')
+    async read(@Query('siteName') siteName: string, @Query('fileName') fileName: string): Promise<FileModel> {
+        return await this.fileService.read(siteName, fileName);
+    }
+
+    @Patch('/manage/file')
+    async update(@Body() body: FileModel): Promise<TOkResult> {
+        await this.fileService.update(body);
+
+        return OkResult;
+    }
+
+    @Delete(' /manage/file')
+    async delete(@Query('siteName') siteName: string, @Query('fileName') fileName: string): Promise<TOkResult> {
         await this.fileService.delete(siteName, fileName);
 
         return OkResult;

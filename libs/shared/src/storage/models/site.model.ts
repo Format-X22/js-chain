@@ -1,24 +1,28 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
-import { FileModel } from '@app/shared/storage/models/file.model';
-import { ScriptModel } from '@app/shared/storage/models/script.model';
+import { Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { IsBoolean, IsOptional, IsString, MaxLength } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 @Table
 export class SiteModel extends Model {
+    @ApiProperty()
+    @IsString()
+    @MaxLength(256)
+    @PrimaryKey
     @Column(DataType.STRING(256))
     siteName: string;
 
     @Column(DataType.STRING(256))
     owner: string;
 
+    @ApiPropertyOptional()
+    @IsBoolean()
+    @IsOptional()
     @Column(DataType.BOOLEAN)
     isNamespaceOnly: boolean;
 
+    @ApiPropertyOptional()
+    @IsString()
+    @IsOptional()
     @Column(DataType.TEXT)
-    bundle: string;
-
-    @HasMany(() => FileModel, 'siteName')
-    files: Array<FileModel>;
-
-    @HasMany(() => ScriptModel, 'siteName')
-    scripts: Array<ScriptModel>;
+    html: string;
 }

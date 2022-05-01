@@ -1,26 +1,59 @@
-import { Injectable } from '@nestjs/common';
-import { DtoScript, TScriptName, TScriptNameResponse } from './script.dto';
-import { TSiteName } from '../site/site.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ScriptModel } from '@app/shared/storage/models/script.model';
+import { StorageService } from '@app/shared/storage/storage.service';
+import * as ts from 'typescript';
 
 @Injectable()
 export class ScriptService {
-    async create({ siteName, scriptName, bundle }: DtoScript): Promise<TScriptNameResponse> {
-        // TODO -
+    private ScriptModel: typeof ScriptModel;
 
-        return { scriptName: null };
+    constructor(storageService: StorageService) {
+        this.ScriptModel = storageService.Script;
     }
 
-    async read(siteName: TSiteName, scriptName: TScriptName): Promise<DtoScript> {
-        // TODO -
+    async create({ siteName, scriptName, simpleJS, simpleTS }: ScriptModel): Promise<void> {
+        if (simpleJS) {
+            await this.ScriptModel.create({ siteName, scriptName, simpleJS });
+            return;
+        }
 
-        return;
+        const compiledSimpleTS = ts.transpileModule(simpleTS, {}).outputText;
+
+        await this.ScriptModel.create({ siteName, scriptName, simpleTS, compiledSimpleTS });
     }
 
-    async update({ siteName, scriptName, bundle }: DtoScript): Promise<void> {
-        // TODO -
+    async read(siteName: ScriptModel['siteName'], scriptName: ScriptModel['scriptName']): Promise<ScriptModel> {
+        return await this.ScriptModel.findOne({
+            where: { siteName, scriptName },
+            attributes: ['siteName', 'fileName', 'simpleJS', 'simpleTS'],
+        });
     }
 
-    async delete(siteName: TSiteName, scriptName: TScriptName): Promise<void> {
-        // TODO -
+    async update({ siteName, scriptName, simpleJS, simpleTS }: ScriptModel): Promise<void> {
+        const values: Partial<ScriptModel> = {};
+
+        if (simpleJS) {
+            values.simpleJS = simpleJS;
+            values.simpleTS = null;
+            values.compiledSimpleTS = null;
+        } else {
+            values.simpleTS = simpleTS;
+            values.compiledSimpleTS = ts.transpileModule(simpleTS, {}).outputText;
+            values.simpleJS = null;
+        }
+
+        const result = await this.ScriptModel.update(values, { where: { siteName, scriptName } });
+
+        if (!result[0]) {
+            throw new NotFoundException();
+        }
+    }
+
+    async delete(siteName: ScriptModel['siteName'], scriptName: ScriptModel['scriptName']): Promise<void> {
+        const result = await this.ScriptModel.destroy({ where: { siteName, scriptName } });
+
+        if (!result) {
+            throw new NotFoundException();
+        }
     }
 }

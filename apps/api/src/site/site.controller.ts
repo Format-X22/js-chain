@@ -1,47 +1,54 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { DtoSite, TSiteIdResponse } from './site.dto';
 import { OkResult, TOkResult } from '../api.dto';
 import { SiteService } from './site.service';
+import { SiteModel } from '@app/shared/storage/models/site.model';
 
 @ApiTags('Site api')
-@Controller('site')
+@Controller('')
 export class SiteController {
     constructor(private siteService: SiteService) {}
 
-    @Post('/')
-    async create(@Body() body: DtoSite): Promise<TSiteIdResponse> {
-        this.checkSiteData(body);
-
-        return await this.siteService.create(body);
+    @Get('/site/:siteName')
+    async get(@Param('siteName') siteName: string): Promise<SiteModel['html']> {
+        return this.siteService.get(siteName);
     }
 
-    @Get('/:siteName')
-    async read(@Param('siteName') siteName: string): Promise<DtoSite> {
+    @Post('/manage/site')
+    async create(@Body() body: SiteModel): Promise<TOkResult> {
+        this.checkSiteData(body);
+
+        await this.siteService.create(body);
+
+        return OkResult;
+    }
+
+    @Get('/manage/site')
+    async read(@Query('siteName') siteName: string): Promise<SiteModel> {
         return await this.siteService.read(siteName);
     }
 
-    @Patch('/:siteName')
-    async update(@Param('siteName') siteName: string, @Body() body: DtoSite): Promise<TOkResult> {
+    @Patch('/manage/site')
+    async update(@Body() body: SiteModel): Promise<TOkResult> {
         this.checkSiteData(body);
         await this.siteService.update(body);
 
         return OkResult;
     }
 
-    @Delete('/:siteName')
-    async delete(@Param('siteName') siteName: string): Promise<TOkResult> {
+    @Delete('/manage/site')
+    async delete(@Query('siteName') siteName: string): Promise<TOkResult> {
         await this.siteService.delete(siteName);
 
         return OkResult;
     }
 
-    private checkSiteData(body: DtoSite): void {
-        const bundle = body.bundle;
+    private checkSiteData(body: SiteModel): void {
+        const bundle = body.html;
         const isNamespaceOnly = body.isNamespaceOnly;
 
-        if (!bundle && !isNamespaceOnly) {
-            throw new BadRequestException('Bundle or isNamespaceOnly required');
+        if ((!bundle && !isNamespaceOnly) || (bundle && isNamespaceOnly)) {
+            throw new BadRequestException('Html or isNamespaceOnly required');
         }
     }
 }
