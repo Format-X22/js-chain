@@ -1,13 +1,74 @@
-import { BadRequestException, Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { ScriptService } from './script.service';
+import {
+    All,
+    BadRequestException,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    NotAcceptableException,
+    Param,
+    Patch,
+    Post,
+    Query,
+    Req,
+} from '@nestjs/common';
+import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { ESupportedMethods, ScriptService, TScriptBody, TScriptQuery, TScriptResult } from './script.service';
 import { OkResult, TOkResult } from '../api.dto';
 import { ScriptModel } from '@app/shared/storage/models/script.model';
+import { Request } from 'express';
 
 @ApiTags('Script api')
 @Controller('')
 export class ScriptController {
     constructor(private scriptService: ScriptService) {}
+
+    @Get('/script-data')
+    async getScriptData(
+        @Query('siteName') siteName: string,
+        @Query('scriptName') scriptName: string,
+    ): Promise<ScriptModel['data']> {
+        return await this.scriptService.getScriptData(siteName, scriptName);
+    }
+
+    @Get('/script-api')
+    async getScriptApiHint(
+        @Query('siteName') siteName: string,
+        @Query('scriptName') scriptName: string,
+        @Req() req: Request,
+    ): Promise<string> {
+        const referer = req.header('referer').replace('/api-docs/', '');
+
+        return `Open in browser window - ${referer}${req.path}/${siteName}/${scriptName}`;
+    }
+
+    @ApiExcludeEndpoint()
+    @Get('/script-api/:siteName/:scriptName')
+    async getScriptApi(@Param('siteName') siteName: string, @Param('scriptName') scriptName: string): Promise<void> {
+        return await this.scriptService.getScriptApi(siteName, scriptName);
+    }
+
+    @ApiExcludeEndpoint()
+    @All('/script/:siteName/:scriptName')
+    async callScript(
+        @Param('siteName') siteName: string,
+        @Param('scriptName') scriptName: string,
+        @Query() query: TScriptQuery,
+        @Body() body: TScriptBody,
+        @Req() req: Request,
+    ): Promise<TScriptResult> {
+        const method = String(req.method).toUpperCase() as ESupportedMethods;
+
+        this.checkCallScriptMethod(method);
+
+        return await this.scriptService.callScript({
+            siteName,
+            scriptName,
+            query,
+            body,
+            method,
+        });
+    }
 
     @Post('/manage/script')
     async create(@Body() body: ScriptModel): Promise<TOkResult> {
@@ -43,6 +104,12 @@ export class ScriptController {
 
         if ((js && ts) || (!js && !ts)) {
             throw new BadRequestException('JS or TS required');
+        }
+    }
+
+    private checkCallScriptMethod(method: string) {
+        if (!(method in ESupportedMethods)) {
+            throw new NotAcceptableException('Custom http methods not supported');
         }
     }
 }

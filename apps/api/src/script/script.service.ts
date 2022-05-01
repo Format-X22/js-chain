@@ -3,6 +3,26 @@ import { ScriptModel } from '@app/shared/storage/models/script.model';
 import { StorageService } from '@app/shared/storage/storage.service';
 import * as ts from 'typescript';
 
+export type TScriptResult = any;
+export type TScriptQuery = Record<string, string>;
+export type TScriptBody = Record<string, any>;
+
+export enum ESupportedMethods {
+    GET = 'GET',
+    POST = 'POST',
+    PATCH = 'PATCH',
+    PUT = 'PUT',
+    DELETE = 'DELETE',
+}
+
+type TCallScriptOptions = {
+    siteName: ScriptModel['siteName'];
+    scriptName: ScriptModel['scriptName'];
+    method: ESupportedMethods;
+    query: TScriptQuery;
+    body: TScriptBody;
+};
+
 @Injectable()
 export class ScriptService {
     private ScriptModel: typeof ScriptModel;
@@ -55,5 +75,25 @@ export class ScriptService {
         if (!result) {
             throw new NotFoundException();
         }
+    }
+
+    async getScriptData(
+        siteName: ScriptModel['siteName'],
+        scriptName: ScriptModel['scriptName'],
+    ): Promise<ScriptModel['data']> {
+        const script = await this.ScriptModel.findOne({
+            where: { siteName, scriptName },
+            attributes: ['data'],
+        });
+
+        return script?.data;
+    }
+
+    async getScriptApi(siteName: ScriptModel['siteName'], scriptName: ScriptModel['scriptName']): Promise<void> {
+        // TODO -
+    }
+
+    async callScript(options: TCallScriptOptions): Promise<TScriptResult> {
+        // TODO -
     }
 }
