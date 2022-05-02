@@ -8,8 +8,6 @@ import { SiteService } from './site/site.service';
 import { SiteController } from './site/site.controller';
 import { FileController } from './file/file.controller';
 import { FileService } from './file/file.service';
-import { CallService } from './call/call.service';
-import { CallController } from './call/call.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { SiteModel } from '@app/shared/storage/models/site.model';
 import { FileModel } from '@app/shared/storage/models/file.model';
@@ -44,7 +42,7 @@ import { StorageModule } from '@app/shared/storage/storage.module';
         }),
         StorageModule,
     ],
-    controllers: [DescriptionController, SiteController, ScriptController, FileController, CallController],
-    providers: [DescriptionService, ScriptService, SiteService, FileService, CallService],
+    controllers: [DescriptionController, SiteController, ScriptController, FileController],
+    providers: [DescriptionService, ScriptService, SiteService, FileService],
 })
 export class ApiModule {}
