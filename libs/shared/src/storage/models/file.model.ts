@@ -3,7 +3,7 @@ import { SiteModel } from '@app/shared/storage/models/site.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, MaxLength } from 'class-validator';
 
-@Table
+@Table({ paranoid: true })
 export class FileModel extends Model {
     @ApiProperty()
     @IsString()

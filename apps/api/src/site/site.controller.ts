@@ -1,4 +1,17 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query, Req } from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Query,
+    Req,
+    Version,
+    VERSION_NEUTRAL,
+} from '@nestjs/common';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { OkResult, TOkResult } from '../api.dto';
 import { SiteService } from './site.service';
@@ -10,6 +23,7 @@ import { Request } from 'express';
 export class SiteController {
     constructor(private siteService: SiteService) {}
 
+    @Version(VERSION_NEUTRAL)
     @Get('/site/:siteName')
     async get(@Param('siteName') siteName: string): Promise<SiteModel['html']> {
         return this.siteService.get(siteName);
@@ -31,7 +45,7 @@ export class SiteController {
     }
 
     @Get('/site-data')
-    async getScriptData(@Query('siteName') siteName: string): Promise<SiteModel['plainData']> {
+    async getSiteData(@Query('siteName') siteName: string): Promise<SiteModel['plainData']> {
         return await this.siteService.getPlainData(siteName);
     }
 

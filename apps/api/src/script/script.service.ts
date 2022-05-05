@@ -1,7 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { ScriptModel } from '@app/shared/storage/models/script.model';
 import { StorageService } from '@app/shared/storage/storage.service';
 import * as ts from 'typescript';
+import { SiteModel } from '@app/shared/storage/models/site.model';
+import { OperationObject, PathItemObject, PathsObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 
 export type TScriptResult = any;
 export type TScriptQuery = Record<string, string>;
@@ -26,64 +28,151 @@ type TCallScriptOptions = {
 @Injectable()
 export class ScriptService {
     private ScriptModel: typeof ScriptModel;
+    private SiteModel: typeof SiteModel;
 
     constructor(storageService: StorageService) {
         this.ScriptModel = storageService.Script;
+        this.SiteModel = storageService.Site;
     }
 
-    async create({ siteName, scriptName, simpleJS, simpleTS }: ScriptModel): Promise<void> {
-        // TODO Add swagger options
-        // TODO Update site swagger
-        // TODO Can be updated
-        // TODO Can be deleted
-        // TODO Script data
+    async create({
+        siteName,
+        scriptName,
+        simpleJS,
+        simpleTS,
+        isUpdatable,
+        isDeletable,
+        httpMethod,
+        swaggerSummary,
+        swaggerDescription,
+        swaggerTag,
+    }: ScriptModel): Promise<void> {
+        // TODO Add swagger params options
 
-        if (simpleJS) {
-            await this.ScriptModel.create({ siteName, scriptName, simpleJS });
-            return;
+        const site = await this.SiteModel.findOne({ where: { siteName } });
+
+        if (!site) {
+            throw new NotFoundException('Site not found');
         }
 
-        const compiledSimpleTS = ts.transpileModule(simpleTS, {}).outputText;
+        const values = { siteName, scriptName, isUpdatable, isDeletable, httpMethod };
 
-        await this.ScriptModel.create({ siteName, scriptName, simpleTS, compiledSimpleTS });
+        if (simpleJS) {
+            await this.ScriptModel.create({ ...values, simpleJS });
+        } else {
+            const compiledSimpleTS = ts.transpileModule(simpleTS, {}).outputText;
+
+            await this.ScriptModel.create({ ...values, simpleTS, compiledSimpleTS });
+        }
+
+        const scriptPath = `/script/${siteName}/${scriptName}`;
+        const scriptMethod = httpMethod.toLowerCase();
+        const paths: PathsObject = site.swaggerConfig.paths;
+
+        paths[scriptPath] = { [scriptMethod]: {} };
+
+        const operation: OperationObject = paths[scriptPath][scriptMethod];
+
+        if (swaggerSummary) {
+            operation.summary = swaggerSummary;
+        }
+
+        if (swaggerDescription) {
+            operation.description = swaggerDescription;
+        }
+
+        if (swaggerTag) {
+            operation.tags = [swaggerTag];
+        }
+
+        site.changed('swaggerConfig', true);
+
+        await site.save();
     }
 
     async read(siteName: ScriptModel['siteName'], scriptName: ScriptModel['scriptName']): Promise<ScriptModel> {
         return await this.ScriptModel.findOne({
             where: { siteName, scriptName },
-            attributes: ['siteName', 'fileName', 'simpleJS', 'simpleTS'],
+            attributes: [
+                'siteName',
+                'fileName',
+                'simpleJS',
+                'simpleTS',
+                'isUpdatable',
+                'isDeletable',
+                'httpMethod',
+                'swaggerConfig',
+            ],
         });
     }
 
-    async update({ siteName, scriptName, simpleJS, simpleTS }: ScriptModel): Promise<void> {
-        const values: Partial<ScriptModel> = {};
+    async update({ siteName, scriptName, simpleJS, simpleTS, isUpdatable, isDeletable }: ScriptModel): Promise<void> {
+        const script = await this.ScriptModel.findOne({ where: { siteName, scriptName } });
 
-        if (simpleJS) {
-            values.simpleJS = simpleJS;
-            values.simpleTS = null;
-            values.compiledSimpleTS = null;
-        } else {
-            values.simpleTS = simpleTS;
-            values.compiledSimpleTS = ts.transpileModule(simpleTS, {}).outputText;
-            values.simpleJS = null;
-        }
-
-        const result = await this.ScriptModel.update(values, { where: { siteName, scriptName } });
-
-        if (!result[0]) {
+        if (!script) {
             throw new NotFoundException();
         }
+
+        if (!script.isUpdatable) {
+            throw new ForbiddenException('Script is not updatable');
+        }
+
+        if (isUpdatable === false) {
+            script.isUpdatable = isUpdatable;
+        }
+
+        if (typeof isDeletable === 'boolean') {
+            if (!script.isDeletable && isDeletable) {
+                throw new ForbiddenException('Is not deletable cant be switched to deletable');
+            }
+
+            if (script.isDeletable && !isDeletable) {
+                script.isDeletable = isDeletable;
+            }
+        }
+
+        if (simpleJS) {
+            script.simpleJS = simpleJS;
+            script.simpleTS = null;
+            script.compiledSimpleTS = null;
+        } else {
+            script.simpleTS = simpleTS;
+            script.compiledSimpleTS = ts.transpileModule(simpleTS, {}).outputText;
+            script.simpleJS = null;
+        }
+
+        await script.save();
     }
 
     async delete(siteName: ScriptModel['siteName'], scriptName: ScriptModel['scriptName']): Promise<void> {
-        const result = await this.ScriptModel.destroy({ where: { siteName, scriptName } });
+        const script = await this.ScriptModel.findOne({ where: { siteName, scriptName } });
 
-        if (!result) {
+        if (!script) {
             throw new NotFoundException();
         }
+
+        if (!script.isDeletable) {
+            throw new ForbiddenException('Is not deletable');
+        }
+
+        await script.destroy();
+    }
+
+    async getPlainData(
+        siteName: ScriptModel['siteName'],
+        scriptName: ScriptModel['scriptName'],
+    ): Promise<ScriptModel['plainData']> {
+        const site = await this.ScriptModel.findOne({
+            where: { siteName, scriptName },
+            attributes: ['plainData'],
+        });
+
+        return site?.plainData;
     }
 
     async callScript(options: TCallScriptOptions): Promise<TScriptResult> {
         // TODO -
+
+        return options;
     }
 }

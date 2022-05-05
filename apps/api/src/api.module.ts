@@ -37,6 +37,7 @@ import { StorageModule } from '@app/shared/storage/storage.module';
                     logging: false,
                     idleTimeoutMillis: 0,
                     connectionTimeoutMillis: 0,
+                    paranoid: true,
                 };
             },
         }),

@@ -11,6 +11,8 @@ import {
     Post,
     Query,
     Req,
+    Version,
+    VERSION_NEUTRAL,
 } from '@nestjs/common';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { ESupportedMethods, ScriptService, TScriptBody, TScriptQuery, TScriptResult } from './script.service';
@@ -24,6 +26,7 @@ export class ScriptController {
     constructor(private scriptService: ScriptService) {}
 
     @ApiExcludeEndpoint()
+    @Version(VERSION_NEUTRAL)
     @All('/script/:siteName/:scriptName')
     async callScript(
         @Param('siteName') siteName: string,
@@ -43,6 +46,14 @@ export class ScriptController {
             body,
             method,
         });
+    }
+
+    @Get('/script-data')
+    async getScriptData(
+        @Query('siteName') siteName: string,
+        @Query('scriptName') scriptName: string,
+    ): Promise<ScriptModel['plainData']> {
+        return await this.scriptService.getPlainData(siteName, scriptName);
     }
 
     @Post('/manage/script')

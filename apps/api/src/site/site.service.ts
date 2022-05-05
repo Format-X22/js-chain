@@ -25,7 +25,7 @@ export class SiteService {
         return data.html;
     }
 
-    async create({ siteName, html, isNamespaceOnly }: SiteModel): Promise<void> {
+    async create({ siteName, html, isNamespaceOnly, swaggerDescription }: SiteModel): Promise<void> {
         const swaggerConfig: OpenAPIObject = {
             openapi: '3.0.0',
             info: {
@@ -34,6 +34,10 @@ export class SiteService {
             },
             paths: {},
         };
+
+        if (swaggerDescription) {
+            swaggerConfig.info.description = swaggerDescription;
+        }
 
         await this.SiteModel.create({ siteName, html, isNamespaceOnly, swaggerConfig });
     }

@@ -3,7 +3,7 @@ import { IsBoolean, IsOptional, IsString, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { OpenAPIObject } from '@nestjs/swagger/dist/interfaces';
 
-@Table
+@Table({ paranoid: true })
 export class SiteModel extends Model {
     @ApiProperty()
     @IsString()
@@ -32,4 +32,9 @@ export class SiteModel extends Model {
 
     @Column(DataType.JSONB)
     swaggerConfig: OpenAPIObject;
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @MaxLength(2048)
+    swaggerDescription: string;
 }
