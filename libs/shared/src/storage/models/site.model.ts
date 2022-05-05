@@ -1,6 +1,7 @@
 import { Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
 import { IsBoolean, IsOptional, IsString, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { OpenAPIObject } from '@nestjs/swagger/dist/interfaces';
 
 @Table
 export class SiteModel extends Model {
@@ -25,4 +26,10 @@ export class SiteModel extends Model {
     @IsOptional()
     @Column(DataType.TEXT)
     html: string;
+
+    @Column(DataType.JSONB)
+    plainData: Record<string, any>;
+
+    @Column(DataType.JSONB)
+    swaggerConfig: OpenAPIObject;
 }

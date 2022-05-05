@@ -37,7 +37,7 @@ async function bootstrap() {
     const swaggerConfig = new DocumentBuilder().setTitle('JS Chain api').setVersion('0.1').build();
     const document = SwaggerModule.createDocument(app, swaggerConfig);
 
-    SwaggerModule.setup('api-docs', app, document);
+    SwaggerModule.setup('api-docs', app, document, { swaggerOptions: { queryConfigEnabled: true } });
 
     const syncOptions = { alter: { drop: false } };
 

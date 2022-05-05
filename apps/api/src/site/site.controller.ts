@@ -1,8 +1,9 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query, Req } from '@nestjs/common';
+import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { OkResult, TOkResult } from '../api.dto';
 import { SiteService } from './site.service';
 import { SiteModel } from '@app/shared/storage/models/site.model';
+import { Request } from 'express';
 
 @ApiTags('Site api')
 @Controller('')
@@ -12,6 +13,26 @@ export class SiteController {
     @Get('/site/:siteName')
     async get(@Param('siteName') siteName: string): Promise<SiteModel['html']> {
         return this.siteService.get(siteName);
+    }
+
+    @Get('/site-api')
+    async getSiteApiHint(@Query('siteName') siteName: string, @Req() req: Request): Promise<string> {
+        const referrer = req.get('referrer');
+        const swaggerEndpoint = `/${siteName}/swagger.json`;
+        const swaggerConfigPath = referrer.replace('/api-docs/', '') + req.path + swaggerEndpoint;
+
+        return `Open in browser - ${referrer}?url=${swaggerConfigPath}`;
+    }
+
+    @ApiExcludeEndpoint()
+    @Get('/site-api/:siteName/swagger.json')
+    async getSiteApiSwaggerJson(@Param('siteName') siteName: string): Promise<SiteModel['swaggerConfig']> {
+        return await this.siteService.getSwaggerJson(siteName);
+    }
+
+    @Get('/site-data')
+    async getScriptData(@Query('siteName') siteName: string): Promise<SiteModel['plainData']> {
+        return await this.siteService.getPlainData(siteName);
     }
 
     @Post('/manage/site')

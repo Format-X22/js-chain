@@ -32,6 +32,12 @@ export class ScriptService {
     }
 
     async create({ siteName, scriptName, simpleJS, simpleTS }: ScriptModel): Promise<void> {
+        // TODO Add swagger options
+        // TODO Update site swagger
+        // TODO Can be updated
+        // TODO Can be deleted
+        // TODO Script data
+
         if (simpleJS) {
             await this.ScriptModel.create({ siteName, scriptName, simpleJS });
             return;
@@ -75,22 +81,6 @@ export class ScriptService {
         if (!result) {
             throw new NotFoundException();
         }
-    }
-
-    async getScriptData(
-        siteName: ScriptModel['siteName'],
-        scriptName: ScriptModel['scriptName'],
-    ): Promise<ScriptModel['data']> {
-        const script = await this.ScriptModel.findOne({
-            where: { siteName, scriptName },
-            attributes: ['data'],
-        });
-
-        return script?.data;
-    }
-
-    async getScriptApi(siteName: ScriptModel['siteName'], scriptName: ScriptModel['scriptName']): Promise<void> {
-        // TODO -
     }
 
     async callScript(options: TCallScriptOptions): Promise<TScriptResult> {

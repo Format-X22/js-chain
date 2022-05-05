@@ -34,7 +34,4 @@ export class ScriptModel extends Model {
 
     @Column(DataType.TEXT)
     compiledSimpleTS: string;
-
-    @Column(DataType.JSONB)
-    data: Record<string, any>;
 }

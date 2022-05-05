@@ -23,31 +23,6 @@ import { Request } from 'express';
 export class ScriptController {
     constructor(private scriptService: ScriptService) {}
 
-    @Get('/script-data')
-    async getScriptData(
-        @Query('siteName') siteName: string,
-        @Query('scriptName') scriptName: string,
-    ): Promise<ScriptModel['data']> {
-        return await this.scriptService.getScriptData(siteName, scriptName);
-    }
-
-    @Get('/script-api')
-    async getScriptApiHint(
-        @Query('siteName') siteName: string,
-        @Query('scriptName') scriptName: string,
-        @Req() req: Request,
-    ): Promise<string> {
-        const referer = req.header('referer').replace('/api-docs/', '');
-
-        return `Open in browser window - ${referer}${req.path}/${siteName}/${scriptName}`;
-    }
-
-    @ApiExcludeEndpoint()
-    @Get('/script-api/:siteName/:scriptName')
-    async getScriptApi(@Param('siteName') siteName: string, @Param('scriptName') scriptName: string): Promise<void> {
-        return await this.scriptService.getScriptApi(siteName, scriptName);
-    }
-
     @ApiExcludeEndpoint()
     @All('/script/:siteName/:scriptName')
     async callScript(

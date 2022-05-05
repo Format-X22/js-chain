@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SiteModel } from '@app/shared/storage/models/site.model';
 import { StorageService } from '@app/shared/storage/storage.service';
+import { OpenAPIObject } from '@nestjs/swagger';
 
 @Injectable()
 export class SiteService {
@@ -13,11 +14,28 @@ export class SiteService {
     async get(siteName): Promise<SiteModel['html']> {
         const data = await this.SiteModel.findOne({ where: { siteName } });
 
-        return data?.html;
+        if (!data) {
+            return null;
+        }
+
+        if (data.isNamespaceOnly) {
+            return 'This is namespace, content not included';
+        }
+
+        return data.html;
     }
 
     async create({ siteName, html, isNamespaceOnly }: SiteModel): Promise<void> {
-        await this.SiteModel.create({ siteName, html, isNamespaceOnly });
+        const swaggerConfig: OpenAPIObject = {
+            openapi: '3.0.0',
+            info: {
+                title: siteName + ' api',
+                version: 'default',
+            },
+            paths: {},
+        };
+
+        await this.SiteModel.create({ siteName, html, isNamespaceOnly, swaggerConfig });
     }
 
     async read(siteName: SiteModel['siteName']): Promise<SiteModel> {
@@ -51,5 +69,23 @@ export class SiteService {
         if (!result) {
             throw new NotFoundException();
         }
+    }
+
+    async getPlainData(siteName: SiteModel['siteName']): Promise<SiteModel['plainData']> {
+        const site = await this.SiteModel.findOne({
+            where: { siteName },
+            attributes: ['plainData'],
+        });
+
+        return site?.plainData;
+    }
+
+    async getSwaggerJson(siteName: SiteModel['siteName']): Promise<SiteModel['swaggerConfig']> {
+        const site = await this.SiteModel.findOne({
+            where: { siteName },
+            attributes: ['swaggerConfig'],
+        });
+
+        return site?.swaggerConfig;
     }
 }
