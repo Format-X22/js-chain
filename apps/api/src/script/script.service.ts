@@ -85,6 +85,8 @@ export class ScriptService {
             operation.tags = [swaggerTag];
         }
 
+        operation.responses = { '200': { description: '' } };
+
         site.changed('swaggerConfig', true);
 
         await site.save();
