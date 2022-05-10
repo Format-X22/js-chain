@@ -29,8 +29,11 @@ export class SiteController {
         return this.siteService.get(siteName);
     }
 
+    @ApiExcludeEndpoint() // TODO In next version
     @Get('/site-api')
     async getSiteApiHint(@Query('siteName') siteName: string, @Req() req: Request): Promise<string> {
+        return; // TODO In next version
+
         const referrer = req.get('referrer');
         const swaggerEndpoint = `/${siteName}/swagger.json`;
         const swaggerConfigPath = referrer.replace('/api-docs/', '') + req.path + swaggerEndpoint;
@@ -41,11 +44,16 @@ export class SiteController {
     @ApiExcludeEndpoint()
     @Get('/site-api/:siteName/swagger.json')
     async getSiteApiSwaggerJson(@Param('siteName') siteName: string): Promise<SiteModel['swaggerConfig']> {
+        return; // TODO In next version
+
         return await this.siteService.getSwaggerJson(siteName);
     }
 
+    @ApiExcludeEndpoint() // TODO In next version
     @Get('/site-data')
     async getSiteData(@Query('siteName') siteName: string): Promise<SiteModel['plainData']> {
+        return; // TODO In next version
+
         return await this.siteService.getPlainData(siteName);
     }
 

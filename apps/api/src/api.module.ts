@@ -2,16 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DescriptionController } from './description/description.controller';
 import { DescriptionService } from './description/description.service';
-import { ScriptService } from './script/script.service';
-import { ScriptController } from './script/script.controller';
 import { SiteService } from './site/site.service';
 import { SiteController } from './site/site.controller';
-import { FileController } from './file/file.controller';
-import { FileService } from './file/file.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { SiteModel } from '@app/shared/storage/models/site.model';
-import { FileModel } from '@app/shared/storage/models/file.model';
-import { ScriptModel } from '@app/shared/storage/models/script.model';
 import { StorageModule } from '@app/shared/storage/storage.module';
 
 @Module({
@@ -31,7 +25,7 @@ import { StorageModule } from '@app/shared/storage/storage.module';
                     username: cs.get('JS_DB_USERNAME'),
                     password: cs.get('JS_DB_PASSWORD'),
                     database: cs.get('JS_DB_DATABASE_NAME'),
-                    models: [SiteModel, FileModel, ScriptModel],
+                    models: [SiteModel],
                     autoLoadModels: true,
                     synchronize: true,
                     logging: false,
@@ -43,7 +37,7 @@ import { StorageModule } from '@app/shared/storage/storage.module';
         }),
         StorageModule,
     ],
-    controllers: [DescriptionController, SiteController, ScriptController, FileController],
-    providers: [DescriptionService, ScriptService, SiteService, FileService],
+    controllers: [DescriptionController, SiteController],
+    providers: [DescriptionService, SiteService],
 })
 export class ApiModule {}
