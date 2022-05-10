@@ -7,6 +7,8 @@ import { SiteController } from './site/site.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { SiteModel } from '@app/shared/storage/models/site.model';
 import { StorageModule } from '@app/shared/storage/storage.module';
+import { AccountModel } from '@app/shared/storage/models/account.model';
+import { VoteModel } from '@app/shared/storage/models/vote.model';
 
 @Module({
     imports: [
@@ -25,7 +27,7 @@ import { StorageModule } from '@app/shared/storage/storage.module';
                     username: cs.get('JS_DB_USERNAME'),
                     password: cs.get('JS_DB_PASSWORD'),
                     database: cs.get('JS_DB_DATABASE_NAME'),
-                    models: [SiteModel],
+                    models: [AccountModel, VoteModel, SiteModel],
                     autoLoadModels: true,
                     synchronize: true,
                     logging: false,

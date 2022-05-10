@@ -5,9 +5,9 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { TStatus } from './api.type';
 import { SiteModel } from '@app/shared/storage/models/site.model';
-import { FileModel } from '@app/shared/storage/models/file.model';
-import { ScriptModel } from '@app/shared/storage/models/script.model';
 import { ErrorsInterceptor } from './api.interceptor';
+import { AccountModel } from '@app/shared/storage/models/account.model';
+import { VoteModel } from '@app/shared/storage/models/vote.model';
 
 export const APP_PRODUCTION_VERSION: TStatus['version']['full'] = '0.1.0';
 export const TYPESCRIPT_VERSION: TStatus['version']['full'] = '4.3.5';
@@ -42,8 +42,9 @@ async function bootstrap() {
     const syncOptions = { alter: { drop: false } };
 
     await SiteModel.sync(syncOptions);
-    await FileModel.sync(syncOptions);
-    await ScriptModel.sync(syncOptions);
+    await AccountModel.sync(syncOptions);
+    await VoteModel.sync(syncOptions);
+    // TODO Another models
 
     await app.listen(port);
 }

@@ -1,5 +1,4 @@
-import { Column, DataType, ForeignKey, Model, PrimaryKey, Table, Default } from 'sequelize-typescript';
-import { SiteModel } from '@app/shared/storage/models/site.model';
+import { Column, DataType, Model, PrimaryKey, Table, Default } from 'sequelize-typescript';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 
@@ -39,7 +38,6 @@ export class ScriptModel extends Model {
     @IsString()
     @MaxLength(256)
     @PrimaryKey
-    @ForeignKey(() => SiteModel)
     @Column(DataType.STRING(256))
     siteName: string;
 

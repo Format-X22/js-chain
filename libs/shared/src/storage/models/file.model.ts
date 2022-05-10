@@ -1,5 +1,4 @@
-import { Column, DataType, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
-import { SiteModel } from '@app/shared/storage/models/site.model';
+import { Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, MaxLength } from 'class-validator';
 
@@ -9,7 +8,6 @@ export class FileModel extends Model {
     @IsString()
     @MaxLength(256)
     @PrimaryKey
-    @ForeignKey(() => SiteModel)
     @Column(DataType.STRING(256))
     siteName: string;
 
