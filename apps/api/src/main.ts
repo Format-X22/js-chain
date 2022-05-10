@@ -10,7 +10,7 @@ import { ScriptModel } from '@app/shared/storage/models/script.model';
 import { ErrorsInterceptor } from './api.interceptor';
 
 export const APP_PRODUCTION_VERSION: TStatus['version']['full'] = '0.1.0';
-export const TYPESCRIPT_VERSION: TStatus['version']['full'] = '0.1.0';
+export const TYPESCRIPT_VERSION: TStatus['version']['full'] = '4.3.5';
 
 const DEFAULT_PORT = 3000;
 
