@@ -3,7 +3,7 @@ import { ScriptModel } from '@app/shared/storage/models/script.model';
 import { StorageService } from '@app/shared/storage/storage.service';
 import * as ts from 'typescript';
 import { SiteModel } from '@app/shared/storage/models/site.model';
-import { OperationObject, PathItemObject, PathsObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { OperationObject, PathsObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 
 export type TScriptResult = any;
 export type TScriptQuery = Record<string, string>;

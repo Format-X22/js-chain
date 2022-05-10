@@ -1,4 +1,4 @@
-import { Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { Column, DataType, ForeignKey, Model, PrimaryKey, Table, Default } from 'sequelize-typescript';
 import { SiteModel } from '@app/shared/storage/models/site.model';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
@@ -9,6 +9,28 @@ export enum EScriptMethods {
     PATH = 'PATH',
     PUT = 'PUT',
     DELETE = 'DELETE',
+}
+
+class SwaggerQuery {
+    @ApiProperty()
+    @IsString()
+    @MaxLength(64)
+    name: string;
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsString()
+    @MaxLength(1024)
+    description: string;
+
+    @ApiPropertyOptional({ default: false })
+    @IsBoolean()
+    required: boolean;
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsString({ each: true })
+    enum: Array<string>;
 }
 
 @Table({ paranoid: true })
@@ -84,4 +106,7 @@ export class ScriptModel extends Model {
     @IsString()
     @MaxLength(128)
     swaggerTag: string;
+
+    @ApiProperty({ type: [SwaggerQuery] })
+    swaggerQueryFields: Array<SwaggerQuery>;
 }
