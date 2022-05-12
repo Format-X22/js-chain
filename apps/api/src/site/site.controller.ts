@@ -18,7 +18,7 @@ import { SiteService } from './site.service';
 import { SiteModel } from '@app/shared/storage/models/site.model';
 import { Request } from 'express';
 
-@ApiTags('Site api')
+@ApiTags('Net sites api')
 @Controller('')
 export class SiteController {
     constructor(private siteService: SiteService) {}

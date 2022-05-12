@@ -9,6 +9,7 @@ import { SiteModel } from '@app/shared/storage/models/site.model';
 import { StorageModule } from '@app/shared/storage/storage.module';
 import { AccountModel } from '@app/shared/storage/models/account.model';
 import { VoteModel } from '@app/shared/storage/models/vote.model';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -38,6 +39,7 @@ import { VoteModel } from '@app/shared/storage/models/vote.model';
             },
         }),
         StorageModule,
+        AuthModule,
     ],
     controllers: [DescriptionController, SiteController],
     providers: [DescriptionService, SiteService],

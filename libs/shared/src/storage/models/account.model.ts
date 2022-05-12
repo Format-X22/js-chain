@@ -14,4 +14,13 @@ export class AccountModel extends Model {
 
     @Column(DataType.BIGINT)
     delegateBalance: bigint;
+
+    @Column(DataType.STRING(256))
+    email: string;
+
+    @Column(DataType.STRING(256))
+    passwordHash: string;
+
+    @Column(DataType.STRING(128))
+    protectedPrivateKey: string;
 }

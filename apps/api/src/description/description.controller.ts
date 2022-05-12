@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { TStatus } from '../api.type';
 import { APP_PRODUCTION_VERSION, TYPESCRIPT_VERSION } from '../main';
 
-@ApiTags('Description')
+@ApiTags('Info and node status')
 @Controller('')
 export class DescriptionController {
     @Get('/status')
