@@ -15,6 +15,7 @@ export class AccountModel extends Model {
     @Column(DataType.BIGINT)
     delegateBalance: bigint;
 
+    // TODO Change email from options
     @Column(DataType.STRING(256))
     email: string;
 
@@ -23,4 +24,7 @@ export class AccountModel extends Model {
 
     @Column(DataType.STRING(128))
     protectedPrivateKey: string;
+
+    @Column(DataType.STRING(128))
+    session: string;
 }

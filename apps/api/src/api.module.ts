@@ -9,7 +9,8 @@ import { SiteModel } from '@app/shared/storage/models/site.model';
 import { StorageModule } from '@app/shared/storage/storage.module';
 import { AccountModel } from '@app/shared/storage/models/account.model';
 import { VoteModel } from '@app/shared/storage/models/vote.model';
-import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 
 @Module({
     imports: [
@@ -39,9 +40,8 @@ import { AuthModule } from './auth/auth.module';
             },
         }),
         StorageModule,
-        AuthModule,
     ],
-    controllers: [DescriptionController, SiteController],
-    providers: [DescriptionService, SiteService],
+    controllers: [DescriptionController, SiteController, AuthController],
+    providers: [DescriptionService, SiteService, AuthService],
 })
 export class ApiModule {}
