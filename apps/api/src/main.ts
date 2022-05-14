@@ -34,7 +34,18 @@ async function bootstrap() {
         defaultVersion: '1',
     });
 
-    const swaggerConfig = new DocumentBuilder().setTitle('JS Chain api').setVersion('0.1').build();
+    const swaggerConfig = new DocumentBuilder()
+        .setTitle('JS Chain api')
+        .setVersion('0.1')
+        .addApiKey(
+            {
+                type: 'apiKey',
+                name: 'x-auth-session',
+                in: 'header',
+            },
+            'x-auth-session',
+        )
+        .build();
     const document = SwaggerModule.createDocument(app, swaggerConfig);
 
     SwaggerModule.setup('api-docs', app, document, { swaggerOptions: { queryConfigEnabled: true } });

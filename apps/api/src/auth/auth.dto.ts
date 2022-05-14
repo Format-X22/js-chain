@@ -24,6 +24,13 @@ export class AuthRegisterDto {
     password: string;
 }
 
+export class AuthRegisterResponseDto {
+    session: string;
+    address: string;
+    publicKeyHex: string;
+    privateKeyHex: string;
+}
+
 export class AuthChangePasswordDto {
     @ApiProperty({ type: String })
     @IsEmail()
@@ -56,4 +63,8 @@ export class AuthSignInDto {
     @MinLength(8)
     @MaxLength(128)
     password: string;
+}
+
+export class AuthSignInResponseDto {
+    session: string;
 }

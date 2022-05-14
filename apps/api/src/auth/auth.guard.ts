@@ -34,9 +34,9 @@ export class AuthGuard implements CanActivate {
                 throw new BadRequestException('Invalid session');
             }
 
-            const result = await this.storageService.Account.count({ where: { session } });
+            const account = await this.storageService.Account.count({ where: { session } });
 
-            if (!result) {
+            if (!account) {
                 throw new ForbiddenException('Session not found');
             }
         }
@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate {
 
 export function CheckAuth() {
     return applyDecorators(
-        ApiSecurity('x-auth-sessionid'),
+        ApiSecurity('x-auth-session'),
         ApiHeader({
             name: 'x-auth-session',
             description: 'Auth session',

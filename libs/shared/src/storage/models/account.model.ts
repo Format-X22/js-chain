@@ -1,4 +1,4 @@
-import { Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
 
 @Table({ paranoid: true })
 export class AccountModel extends Model {
@@ -16,13 +16,14 @@ export class AccountModel extends Model {
     delegateBalance: bigint;
 
     // TODO Change email from options
+    @Unique
     @Column(DataType.STRING(256))
     email: string;
 
-    @Column(DataType.STRING(256))
+    @Column(DataType.STRING(128))
     passwordHash: string;
 
-    @Column(DataType.STRING(128))
+    @Column(DataType.STRING(256))
     protectedPrivateKey: string;
 
     @Column(DataType.STRING(128))
