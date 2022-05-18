@@ -12,4 +12,7 @@ export class VoteModel extends Model {
 
     @Column(DataType.BIGINT)
     amount: bigint;
+
+    @Column(DataType.BOOLEAN)
+    asSupport: boolean;
 }

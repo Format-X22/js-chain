@@ -11,6 +11,8 @@ import { AccountModel } from '@app/shared/storage/models/account.model';
 import { VoteModel } from '@app/shared/storage/models/vote.model';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
+import { DemocracyController } from './democracy/democracy.controller';
+import { DemocracyService } from './democracy/democracy.service';
 
 @Module({
     imports: [
@@ -41,7 +43,7 @@ import { AuthService } from './auth/auth.service';
         }),
         StorageModule,
     ],
-    controllers: [DescriptionController, SiteController, AuthController],
-    providers: [DescriptionService, SiteService, AuthService],
+    controllers: [DescriptionController, SiteController, AuthController, DemocracyController],
+    providers: [DescriptionService, SiteService, AuthService, DemocracyService],
 })
 export class ApiModule {}
