@@ -48,7 +48,7 @@ async function bootstrap() {
         .build();
     const document = SwaggerModule.createDocument(app, swaggerConfig);
 
-    SwaggerModule.setup('api-docs', app, document, { swaggerOptions: { queryConfigEnabled: true } });
+    SwaggerModule.setup('api-docs', app, document);
 
     const syncOptions = { alter: { drop: false } };
 

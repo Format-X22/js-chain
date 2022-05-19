@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SiteModel } from '@app/shared/storage/models/site.model';
 import { StorageService } from '@app/shared/storage/storage.service';
-import { OpenAPIObject } from '@nestjs/swagger';
+import { SiteUpdateDto, SiteModelDto, SiteCreateDto, TSiteName } from './site.dto';
 
 @Injectable()
 export class SiteService {
@@ -11,55 +11,29 @@ export class SiteService {
         this.SiteModel = storageService.Site;
     }
 
-    async get(siteName): Promise<SiteModel['html']> {
+    async get(siteName: TSiteName): Promise<string> {
         const data = await this.SiteModel.findOne({ where: { siteName } });
 
         if (!data) {
             return null;
         }
 
-        if (data.isNamespaceOnly) {
-            return 'This is namespace, content not included';
-        }
-
         return data.html;
     }
 
-    async create({ siteName, html, isNamespaceOnly, swaggerDescription }: SiteModel): Promise<void> {
-        const swaggerConfig: OpenAPIObject = {
-            openapi: '3.0.0',
-            info: {
-                title: siteName + ' api',
-                version: 'default',
-            },
-            paths: {},
-        };
-
-        if (swaggerDescription) {
-            swaggerConfig.info.description = swaggerDescription;
-        }
-
-        await this.SiteModel.create({ siteName, html, isNamespaceOnly, swaggerConfig });
+    async create({ siteName, html }: SiteCreateDto): Promise<void> {
+        await this.SiteModel.create({ siteName, html });
     }
 
-    async read(siteName: SiteModel['siteName']): Promise<SiteModel> {
+    async read(siteName: TSiteName): Promise<SiteModelDto> {
         return await this.SiteModel.findOne({
             where: { siteName },
-            attributes: ['siteName', 'owner', 'isNamespaceOnly', 'html'],
+            attributes: ['siteName', 'owner', 'html'],
         });
     }
 
-    async update({ siteName, html, isNamespaceOnly }: SiteModel): Promise<void> {
-        const values: Partial<SiteModel> = {};
-
-        if (isNamespaceOnly) {
-            values.isNamespaceOnly = true;
-            values.html = null;
-        } else {
-            values.isNamespaceOnly = false;
-            values.html = html;
-        }
-
+    async update(siteName: TSiteName, { html }: SiteUpdateDto): Promise<void> {
+        const values: Partial<SiteModel> = { html };
         const result = await this.SiteModel.update(values, { where: { siteName } });
 
         if (!result[0]) {
@@ -67,29 +41,11 @@ export class SiteService {
         }
     }
 
-    async delete(siteName: SiteModel['siteName']): Promise<void> {
+    async delete(siteName: TSiteName): Promise<void> {
         const result = await this.SiteModel.destroy({ where: { siteName } });
 
         if (!result) {
             throw new NotFoundException();
         }
-    }
-
-    async getPlainData(siteName: SiteModel['siteName']): Promise<SiteModel['plainData']> {
-        const site = await this.SiteModel.findOne({
-            where: { siteName },
-            attributes: ['plainData'],
-        });
-
-        return site?.plainData;
-    }
-
-    async getSwaggerJson(siteName: SiteModel['siteName']): Promise<SiteModel['swaggerConfig']> {
-        const site = await this.SiteModel.findOne({
-            where: { siteName },
-            attributes: ['swaggerConfig'],
-        });
-
-        return site?.swaggerConfig;
     }
 }
