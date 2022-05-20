@@ -4,6 +4,13 @@ import { SiteModel } from '@app/shared/storage/models/site.model';
 
 export type TSiteName = SiteModel['siteName'];
 
+export class SiteIdParam {
+    @ApiProperty()
+    @IsString()
+    @MaxLength(256)
+    siteName: string;
+}
+
 export class SiteCreateDto {
     @ApiProperty()
     @IsString()

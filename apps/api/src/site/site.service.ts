@@ -12,13 +12,12 @@ export class SiteService {
     }
 
     async get(siteName: TSiteName): Promise<string> {
-        const data = await this.SiteModel.findOne({ where: { siteName } });
+        const data = await this.SiteModel.findOne({
+            where: { siteName },
+            attributes: ['html'],
+        });
 
-        if (!data) {
-            return null;
-        }
-
-        return data.html;
+        return data?.html;
     }
 
     async create({ siteName, html }: SiteCreateDto): Promise<void> {
