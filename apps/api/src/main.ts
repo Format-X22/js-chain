@@ -6,11 +6,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { TStatus } from './api.type';
 import { SiteModel } from '@app/shared/storage/models/site.model';
 import { ErrorsInterceptor } from './api.interceptor';
-import { AccountModel } from '@app/shared/storage/models/account.model';
-import { VoteModel } from '@app/shared/storage/models/vote.model';
+import { FileModel } from '@app/shared/storage/models/file.model';
 
 export const APP_PRODUCTION_VERSION: TStatus['version']['full'] = '0.1.0';
-export const TYPESCRIPT_VERSION: TStatus['version']['full'] = '4.3.5';
 
 const DEFAULT_PORT = 3000;
 
@@ -53,9 +51,7 @@ async function bootstrap() {
     const syncOptions = { alter: { drop: false } };
 
     await SiteModel.sync(syncOptions);
-    await AccountModel.sync(syncOptions);
-    await VoteModel.sync(syncOptions);
-    // TODO Another models
+    await FileModel.sync(syncOptions);
 
     await app.listen(port);
 }

@@ -1,18 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DescriptionController } from './description/description.controller';
-import { DescriptionService } from './description/description.service';
 import { SiteService } from './site/site.service';
 import { SiteController } from './site/site.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { SiteModel } from '@app/shared/storage/models/site.model';
 import { StorageModule } from '@app/shared/storage/storage.module';
-import { AccountModel } from '@app/shared/storage/models/account.model';
-import { VoteModel } from '@app/shared/storage/models/vote.model';
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
-import { DemocracyController } from './democracy/democracy.controller';
-import { DemocracyService } from './democracy/democracy.service';
+import { FileModel } from '@app/shared/storage/models/file.model';
+import { FileController } from './file/file.controller';
+import { FileService } from './file/file.service';
+import { StatusController } from './status/status.controller';
 
 @Module({
     imports: [
@@ -31,7 +27,7 @@ import { DemocracyService } from './democracy/democracy.service';
                     username: cs.get('JS_DB_USERNAME'),
                     password: cs.get('JS_DB_PASSWORD'),
                     database: cs.get('JS_DB_DATABASE_NAME'),
-                    models: [AccountModel, VoteModel, SiteModel],
+                    models: [SiteModel, FileModel],
                     autoLoadModels: true,
                     synchronize: true,
                     logging: false,
@@ -43,7 +39,7 @@ import { DemocracyService } from './democracy/democracy.service';
         }),
         StorageModule,
     ],
-    controllers: [DescriptionController, SiteController, AuthController, DemocracyController],
-    providers: [DescriptionService, SiteService, AuthService, DemocracyService],
+    controllers: [StatusController, SiteController, FileController],
+    providers: [SiteService, FileService],
 })
 export class ApiModule {}
